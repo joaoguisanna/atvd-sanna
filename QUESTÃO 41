@@ -1,0 +1,43 @@
+#include <stdio.h> #include <ctype.h>
+
+#define ALPHABET_SIZE 26
+
+// Função para criptografar uma mensagem usando a Cifra de César void cifraCesar(char *mensagem, int chave) { while (*mensagem) { if (isalpha(*mensagem)) { char offset = islower(*mensagem) ? 'a' : 'A'; *mensagem = (*mensagem - offset + chave) % ALPHABET_SIZE + offset; } mensagem++; } }
+
+// Função para descriptografar uma mensagem usando a Cifra de César void decifraCesar(char *mensagem, int chave) { cifraCesar(mensagem, ALPHABET_SIZE - chave); // Descriptografar é criptografar com a chave invertida }
+
+int main() { char mensagem[100]; int chave; int opcao;
+
+printf("Digite a mensagem (max 99 caracteres): ");
+fgets(mensagem, sizeof(mensagem), stdin);
+
+// Remover o newline no final da mensagem, se presente
+size_t len = strlen(mensagem);
+if (len > 0 && mensagem[len - 1] == '\n') {
+    mensagem[len - 1] = '\0';
+}
+
+printf("Digite a chave (um número inteiro): ");
+scanf("%d", &chave);
+
+// Ajustar a chave para estar dentro do intervalo do alfabeto
+chave = chave % ALPHABET_SIZE;
+
+printf("Escolha uma opção:\n");
+printf("1. Criptografar\n");
+printf("2. Descriptografar\n");
+printf("Digite a opção (1 ou 2): ");
+scanf("%d", &opcao);
+
+if (opcao == 1) {
+    cifraCesar(mensagem, chave);
+    printf("Mensagem criptografada: %s\n", mensagem);
+} else if (opcao == 2) {
+    decifraCesar(mensagem, chave);
+    printf("Mensagem descriptografada: %s\n", mensagem);
+} else {
+    printf("Opção inválida!\n");
+}
+
+return 0;
+}
