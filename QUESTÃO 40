@@ -1,0 +1,55 @@
+#include <stdio.h>
+
+#define SIZE 3
+
+void printBoard(char board[SIZE][SIZE]) { printf("\n"); for (int i = 0; i < SIZE; i++) { for (int j = 0; j < SIZE; j++) { printf(" %c ", board[i][j]); if (j < SIZE - 1) printf("|"); } printf("\n"); if (i < SIZE - 1) { for (int j = 0; j < SIZE; j++) { printf("---"); if (j < SIZE - 1) printf("|"); } printf("\n"); } } printf("\n"); }
+
+int checkWin(char board[SIZE][SIZE], char player) { // Check rows and columns for (int i = 0; i < SIZE; i++) { if ((board[i][0] == player && board[i][1] == player && board[i][2] == player) || (board[0][i] == player && board[1][i] == player && board[2][i] == player)) { return 1; } }
+
+// Check diagonals
+if ((board[0][0] == player && board[1][1] == player && board[2][2] == player) ||
+    (board[0][2] == player && board[1][1] == player && board[2][0] == player)) {
+    return 1;
+}
+
+return 0;
+}
+
+int checkDraw(char board[SIZE][SIZE]) { for (int i = 0; i < SIZE; i++) { for (int j = 0; j < SIZE; j++) { if (board[i][j] == ' ') { return 0; } } } return 1; }
+
+void playGame() { char board[SIZE][SIZE] = { {' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '} }; char player = 'X'; int row, col;
+
+while (1) {
+    printBoard(board);
+    printf("Jogador %c, insira linha e coluna (0-2): ", player);
+    scanf("%d %d", &row, &col);
+
+    // Validar movimento
+    if (row < 0 || row >= SIZE || col < 0 || col >= SIZE || board[row][col] != ' ') {
+        printf("Movimento inválido. Tente novamente.\n");
+        continue;
+    }
+
+    // Fazer o movimento
+    board[row][col] = player;
+
+    // Verificar vitória
+    if (checkWin(board, player)) {
+        printBoard(board);
+        printf("Parabéns, jogador %c! Você ganhou!\n", player);
+        break;
+    }
+
+    // Verificar empate
+    if (checkDraw(board)) {
+        printBoard(board);
+        printf("Empate!\n");
+        break;
+    }
+
+    // Trocar jogador
+    player = (player == 'X') ? 'O' : 'X';
+}
+}
+
+int main() { printf("Bem-vindo ao Jogo da Velha!\n"); playGame(); return 0; }
