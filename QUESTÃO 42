@@ -1,0 +1,63 @@
+#include <stdio.h> #include <stdlib.h> #include <time.h>
+
+#define MIN 1 #define MAX 100
+
+int main() { int numero_aleatorio;
+
+// Inicializa o gerador de números aleatórios com base no tempo atual
+srand(time(NULL));
+
+// Gera um número aleatório entre 1 e 100
+numero_aleatorio = (rand() % (MAX - MIN + 1)) + MIN;
+
+printf("Número aleatório entre %d e %d: %d\n", MIN, MAX, numero_aleatorio);
+#include <stdio.h>
+
+#define MAX_SIZE 100
+
+void printLIS(int arr[], int n, int lis[]) { printf("Maior subsequência crescente: "); for (int i = 0; i < n; i++) { if (lis[i] == 1) { printf("%d ", arr[i]); } } printf("\n"); }
+
+void findLIS(int arr[], int n) { int lis[MAX_SIZE]; int maxLength = 1; int maxIndex = 0;
+
+// Inicializa o array LIS
+for (int i = 0; i < n; i++) {
+    lis[i] = 1;
+}
+
+// Preenche o array LIS
+for (int i = 1; i < n; i++) {
+    for (int j = 0; j < i; j++) {
+        if (arr[i] > arr[j] && lis[i] < lis[j] + 1) {
+            lis[i] = lis[j] + 1;
+        }
+    }
+    if (lis[i] > maxLength) {
+        maxLength = lis[i];
+        maxIndex = i;
+    }
+}
+
+// Exibe o resultado
+printf("Comprimento da maior subsequência crescente: %d\n", maxLength);
+printLIS(arr, maxIndex + 1, lis);
+}
+
+int main() { int arr[MAX_SIZE]; int n;
+
+printf("Digite o número de elementos: ");
+scanf("%d", &n);
+
+if (n > MAX_SIZE) {
+    printf("Número de elementos excede o tamanho máximo permitido.\n");
+    return 1;
+}
+
+printf("Digite os elementos do vetor:\n");
+for (int i = 0; i < n; i++) {
+    scanf("%d", &arr[i]);
+}
+
+findLIS(arr, n);
+
+return 0;
+}
