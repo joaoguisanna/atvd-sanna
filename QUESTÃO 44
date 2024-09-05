@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+#define BOARD_SIZE 8
+
+// Função para verificar se uma posição está dentro dos limites do tabuleiro int isValidMove(int x, int y) { return x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE; }
+
+// Função para imprimir a posição em formato de coordenadas (letra + número) void printPosition(int x, int y) { printf("(%c, %d)\n", 'a' + y, BOARD_SIZE - x); }
+
+// Função para encontrar e exibir todos os movimentos possíveis do cavalo void findKnightMoves(int x, int y) { // Possíveis movimentos do cavalo int moves[8][2] = { {2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2} };
+
+printf("Movimentos possíveis do cavalo a partir da posição (%c, %d):\n", 'a' + y, BOARD_SIZE - x);
+
+for (int i = 0; i < 8; i++) {
+    int newX = x + moves[i][0];
+    int newY = y + moves[i][1];
+    if (isValidMove(newX, newY)) {
+        printPosition(newX, newY);
+    }
+}
+}
+
+int main() { char col; int row; int x, y;
+
+printf("Digite a posição inicial do cavalo (por exemplo, 'e4'):\n");
+scanf(" %c%d", &col, &row);
+
+// Converter a entrada para índices do array (0-7)
+x = BOARD_SIZE - row;   // Converter linha para índice de 0 a 7
+y = col - 'a';          // Converter coluna para índice de 0 a 7
+
+if (isValidMove(x, y)) {
+    findKnightMoves(x, y);
+} else {
+    printf("Posição inválida. As coordenadas devem estar entre 'a1' e 'h8'.\n");
+}
+
+return 0;
+}
