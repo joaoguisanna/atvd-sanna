@@ -1,0 +1,48 @@
+#include <stdio.h> #include <stdlib.h> #include <ctype.h>
+
+#define MAX 100
+
+// Função para verificar se o caractere é um dígito int isDigit(char c) { return c >= '0' && c <= '9'; }
+
+// Função para retornar o valor inteiro do caractere int charToInt(char c) { return c - '0'; }
+
+// Função para avaliar a expressão pós-fixa int evaluatePostfix(const char* expression) { int stack[MAX]; int top = -1;
+
+for (int i = 0; expression[i] != '\0'; ++i) {
+    char token = expression[i];
+
+    if (isDigit(token)) {
+        // Empurrar o dígito para a pilha
+        stack[++top] = charToInt(token);
+    } else if (token == ' ') {
+        // Ignorar espaços
+        continue;
+    } else {
+        // Operador, então pop dois operandos da pilha
+        int right = stack[top--];
+        int left = stack[top--];
+
+        // Aplicar o operador
+        switch (token) {
+            case '+': stack[++top] = left + right; break;
+            case '-': stack[++top] = left - right; break;
+            case '*': stack[++top] = left * right; break;
+            case '/': stack[++top] = left / right; break;
+            default:
+                printf("Operador desconhecido: %c\n", token);
+                exit(1);
+        }
+    }
+}
+
+// O resultado final estará no topo da pilha
+return stack[top];
+}
+
+int main() { const char* expression = "3 4 + 2 * 7 /";
+
+int result = evaluatePostfix(expression);
+printf("O resultado da expressão pós-fixa '%s' é %d\n", expression, result);
+
+return 0;
+}
