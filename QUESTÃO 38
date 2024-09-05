@@ -1,0 +1,71 @@
+#include <stdio.h> #include <stdlib.h> #include <ctype.h> #include <string.h>
+
+#define MAX 100
+
+// Estrutura para a pilha typedef struct { int top; char items[MAX]; } Stack;
+
+// Função para inicializar a pilha void initStack(Stack *s) { s->top = -1; }
+
+// Função para verificar se a pilha está cheia int isFull(Stack *s) { return s->top == MAX - 1; }
+
+// Função para verificar se a pilha está vazia int isEmpty(Stack *s) { return s->top == -1; }
+
+// Função para adicionar um item à pilha void push(Stack *s, char item) { if (isFull(s)) { printf("Pilha cheia!\n"); return; } s->items[++(s->top)] = item; }
+
+// Função para remover um item da pilha char pop(Stack *s) { if (isEmpty(s)) { printf("Pilha vazia!\n"); return '\0'; // Valor de erro } return s->items[(s->top)--]; }
+
+// Função para ver o item no topo da pilha sem removê-lo char peek(Stack *s) { if (isEmpty(s)) { return '\0'; // Valor de erro } return s->items[s->top]; }
+
+// Função para verificar a precedência dos operadores int precedence(char op) { switch (op) { case '+': case '-': return 1; case '*': case '/': return 2; case '^': return 3; default: return 0; } }
+
+// Função para converter expressão infixa para pós-fixa void infixToPostfix(const char *infix, char *postfix) { Stack s; initStack(&s); int k = 0;
+
+for (int i = 0; infix[i] != '\0'; i++) {
+    char ch = infix[i];
+
+    if (isspace(ch)) {
+        continue;
+    }
+
+    if (isalnum(ch)) {
+        postfix[k++] = ch;
+    } else if (ch == '(') {
+        push(&s, ch);
+    } else if (ch == ')') {
+        while (!isEmpty(&s) && peek(&s) != '(') {
+            postfix[k++] = pop(&s);
+        }
+        pop(&s); // Remover '('
+    } else {
+        while (!isEmpty(&s) && precedence(peek(&s)) >= precedence(ch)) {
+            postfix[k++] = pop(&s);
+        }
+        push(&s, ch);
+    }
+}
+
+// Desempilhar todos os operadores restantes
+while (!isEmpty(&s)) {
+    postfix[k++] = pop(&s);
+}
+
+postfix[k] = '\0'; // Terminar a string
+}
+
+int main() { char infix[MAX], postfix[MAX];
+
+printf("Digite a expressão infixa: ");
+fgets(infix, sizeof(infix), stdin);
+
+// Remove o caractere de nova linha, se presente
+size_t len = strlen(infix);
+if (len > 0 && infix[len - 1] == '\n') {
+    infix[len - 1] = '\0';
+}
+
+infixToPostfix(infix, postfix);
+
+printf("Expressão pós-fixa: %s\n", postfix);
+
+return 0;
+}
