@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+// Função para realizar a ordenação Selection Sort void selectionSort(int arr[], int n) { int i, j, min_idx, temp; // Passa por todos os elementos do array for (i = 0; i < n-1; i++) { // Encontra o menor elemento na parte não ordenada do array min_idx = i; for (j = i+1; j < n; j++) { if (arr[j] < arr[min_idx]) { min_idx = j; } } // Troca o elemento encontrado com o primeiro elemento não ordenado if (min_idx != i) { temp = arr[i]; arr[i] = arr[min_idx]; arr[min_idx] = temp; } } }
+
+// Função para imprimir o array void printArray(int arr[], int size) { int i; for (i = 0; i < size; i++) printf("%d ", arr[i]); printf("\n"); }
+
+int main() { int arr[] = {64, 34, 25, 12, 22, 11, 90}; int n = sizeof(arr)/sizeof(arr[0]);
+
+printf("Array original:\n");
+printArray(arr, n);
+
+selectionSort(arr, n);
+
+printf("Array ordenado:\n");
+printArray(arr, n);
+
+return 0;
+}
