@@ -1,0 +1,40 @@
+#include <stdio.h> #include <stdlib.h>
+
+#define MAX 100 // Tamanho máximo da fila
+
+// Estrutura para a fila typedef struct { int front, rear, size; int items[MAX]; } Queue;
+
+// Função para inicializar a fila void initQueue(Queue *q) { q->front = 0; q->rear = -1; q->size = 0; }
+
+// Função para verificar se a fila está cheia int isFull(Queue *q) { return q->size == MAX; }
+
+// Função para verificar se a fila está vazia int isEmpty(Queue *q) { return q->size == 0; }
+
+// Função para adicionar um item à fila void enqueue(Queue *q, int item) { if (isFull(q)) { printf("Fila cheia! Não é possível adicionar o item %d.\n", item); return; } q->rear = (q->rear + 1) % MAX; q->items[q->rear] = item; q->size++; printf("Item %d adicionado à fila.\n", item); }
+
+// Função para remover um item da fila int dequeue(Queue *q) { if (isEmpty(q)) { printf("Fila vazia! Não é possível remover um item.\n"); return -1; // Valor de erro } int item = q->items[q->front]; q->front = (q->front + 1) % MAX; q->size--; return item; }
+
+// Função para ver o item na frente da fila sem removê-lo int peek(Queue *q) { if (isEmpty(q)) { printf("Fila vazia! Não há itens para mostrar.\n"); return -1; // Valor de erro } return q->items[q->front]; }
+
+// Função para exibir todos os itens da fila void display(Queue *q) { if (isEmpty(q)) { printf("Fila vazia!\n"); return; } printf("Itens na fila:\n"); for (int i = 0; i < q->size; i++) { printf("%d\n", q->items[(q->front + i) % MAX]); } }
+
+int main() { Queue q; initQueue(&q);
+
+// Testando a fila
+enqueue(&q, 10);
+enqueue(&q, 20);
+enqueue(&q, 30);
+enqueue(&q, 40);
+enqueue(&q, 50);
+
+printf("Item na frente da fila: %d\n", peek(&q));
+
+display(&q);
+
+printf("Item removido: %d\n", dequeue(&q));
+printf("Item removido: %d\n", dequeue(&q));
+
+display(&q);
+
+return 0;
+}
