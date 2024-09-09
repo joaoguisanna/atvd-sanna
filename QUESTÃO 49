@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <string.h>
+
+void searchPattern(const char *text, const char *pattern) {
+    int textLen = strlen(text);
+    int patternLen = strlen(pattern);
+
+    // Percorre o texto para procurar o padrão
+    for (int i = 0; i <= textLen - patternLen; i++) {
+        int j;
+        // Verifica se o padrão corresponde ao segmento do texto
+        for (j = 0; j < patternLen; j++) {
+            if (text[i + j] != pattern[j]) {
+                break;
+            }
+        }
+
+        // Se o padrão é encontrado
+        if (j == patternLen) {
+            printf("Padrão encontrado na posição %d\n", i);
+        }
+    }
+}
+
+int main() {
+    char text[100];
+    char pattern[100];
+
+    // Recebe o texto e o padrão do usuário
+    printf("Digite o texto: ");
+    fgets(text, sizeof(text), stdin);
+    text[strcspn(text, "\n")] = '\0'; // Remove o caractere de nova linha
+
+    printf("Digite o padrão a ser buscado: ");
+    fgets(pattern, sizeof(pattern), stdin);
+    pattern[strcspn(pattern, "\n")] = '\0'; // Remove o caractere de nova linha
+
+    // Chama a função de busca de padrão
+    searchPattern(text, pattern);
+
+    return 0;
+}
