@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_FLOORS 10
+
+typedef struct {
+    int currentFloor;
+    int requestedFloor;
+    int direction; // 1 para cima, -1 para baixo, 0 para parado
+} Elevator;
+
+void printElevatorStatus(Elevator elevator) {
+    printf("Elevador está no andar %d\n", elevator.currentFloor);
+    if (elevator.direction == 1) {
+        printf("Direção: Subindo\n");
+    } else if (elevator.direction == -1) {
+        printf("Direção: Descendo\n");
+    } else {
+        printf("Direção: Parado\n");
+    }
+}
+
+void moveElevator(Elevator *elevator) {
+    if (elevator->currentFloor < elevator->requestedFloor) {
+        elevator->direction = 1;
+        elevator->currentFloor++;
+    } else if (elevator->currentFloor > elevator->requestedFloor) {
+        elevator->direction = -1;
+        elevator->currentFloor--;
+    } else {
+        elevator->direction = 0;
+    }
+}
+
+int main() {
+    Elevator elevator;
+    elevator.currentFloor = 0; // Elevador começa no andar 0
+    elevator.requestedFloor = -1;
+    elevator.direction = 0;
+
+    int request;
+    int exit = 0;
+
+    printf("Simulador de Elevador\n");
+    printf("O prédio tem %d andares (0 a %d)\n", MAX_FLOORS, MAX_FLOORS - 1);
+
+    while (!exit) {
+        printElevatorStatus(elevator);
+
+        if (elevator.direction == 0) {
+            printf("Digite o andar para o qual deseja chamar o elevador (ou -1 para sair): ");
+            scanf("%d", &request);
+
+            if (request == -1) {
+                exit = 1;
+            } else if (request >= 0 && request < MAX_FLOORS) {
+                elevator.requestedFloor = request;
+            } else {
+                printf("Andar inválido! Por favor, escolha um andar entre 0 e %d.\n", MAX_FLOORS - 1);
+            }
+        } else {
+            moveElevator(&elevator);
+
+            if (elevator.direction == 0) {
+                printf("Elevador chegou ao andar %d\n", elevator.currentFloor);
+            }
+        }
+    }
+
+    printf("Simulação encerrada.\n");
+    return 0;
+}
